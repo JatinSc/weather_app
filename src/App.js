@@ -16,17 +16,18 @@ function App() {
  const response = await fetch(url);
  const responseJson = await response.json();
 console.log(responseJson)
-setHistory(search)
+if(!search==""){
+setHistory(prev =>{
+  return[...prev,search]
+})}
 if(responseJson.name){
-  setWeather(responseJson ,{new:true})
-  
-  
+  setWeather(responseJson ,{new:true}) 
 }else{
   setWeather(null)
   setPrompt("PLEASE ENTER A VALID CITY NAME")
 }
   }
-
+  
   
 
   return (
@@ -39,7 +40,14 @@ if(responseJson.name){
 </div>
     </form>
     {
-      search=="" && !history=="" ? <><p style={{color:"blue"}}><strong> LAST CITY ENTRIES :</strong></p> <strong>1. {history}</strong></>:( weather?.name ?<> <div  style={{marginLeft:"35%",marginRight:"38%"}}>
+      search=="" && !history=="" ? <><p style={{color:"blue"}}><strong> LAST CITY ENTRIES :</strong></p> 
+      {history.slice(-3).reverse().map((history) =>(
+        <ul>
+          <li><strong>{history}</strong></li>
+        </ul>
+      ))}
+      
+      </>:( weather?.name ?<> <div  style={{marginLeft:"35%",marginRight:"38%"}}>
       <p style={{backgroundColor:"rgb(206, 231, 206)"}}>WEATHER DETAILS OF CITY : {weather?.name}</p>
       <p>CURRENT TEMPERATURE : {weather?.main?.temp?weather?.main?.temp:"NOT FOUND"}</p>
       <p>TEMPREATURE RANGE : {weather?.main?.temp_min?weather?.main?.temp_min:" NOT FOUND"}<strong> to </strong> {weather?.main?.temp_max?weather?.main?.temp_max:"NOT FOUND"}</p>
